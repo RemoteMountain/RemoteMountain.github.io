@@ -53,15 +53,55 @@
           <h1 id="Harbor简介"><a href="#Harbor简介" class="headerlink" title="Harbor简介"></a>Harbor简介</h1><ul>
 <li>Harbor是一个用于存储和分发Docker镜像的企业级Registry服务器，通过添加一些企业必需的功能特性，例如安全、标识和管理等，扩展了开源Docker Distribution。作为一个企业级私有Registry服务器，Harbor提供了更好的性能和安全。提升用户使用Registry构建和运行环境传输镜像的效率。Harbor支持安装在多个Registry节点的镜像资源复制，镜像全部保存在私有Registry中， 确保数据和知识产权在公司内部网络中管控。另外，Harbor也提供了高级的安全特性，诸如用户管理，访问控制和活动审计等。</li>
 </ul>
+<hr>
+<ul>
+<li><strong> 基于角色的访问控制 </strong> - 用户与Docker镜像仓库通过“项目”进行组织管理，一个用户可以对多个镜像仓库在同一命名空间（project）里有不同的权限。</li>
+<li><strong> 镜像复制 </strong> - 镜像可以在多个Registry实例中复制（同步）。尤其适合于负载均衡，高可用，混合云和多云的场景。</li>
+<li><strong> 图形化用户界面 </strong>- 用户可以通过浏览器来浏览，检索当前Docker镜像仓库，管理项目和命名空间。</li>
+<li><strong> AD/LDAP 支持 </strong>- Harbor可以集成企业内部已有的AD/LDAP，用于鉴权认证管理。</li>
+<li><strong> 审计管理 </strong>- 所有针对镜像仓库的操作都可以被记录追溯，用于审计管理。</li>
+<li><strong> 国际化 </strong>- 已拥有英文、中文、德文、日文和俄文的本地化版本。更多的语言将会添加进来。</li>
+<li><strong> RESTful API </strong>- RESTful API 提供给管理员对于Harbor更多的操控, 使得与其它管理软件集成变得更容易。</li>
+<li><strong> 部署简单 </strong>- 提供在线和离线两种安装工具， 也可以安装到vSphere平台(OVA方式)<br>虚拟设备。</li>
+</ul>
+<hr>
 <h1 id="Harbor的安装"><a href="#Harbor的安装" class="headerlink" title="Harbor的安装"></a>Harbor的安装</h1><ul>
 <li>关于安装部分，分为在线和离线安装，官网上有详细的安装说明。<a href="http://vmware.github.io/harbor/" target="_blank" rel="noopener">官网</a></li>
 </ul>
 <h1 id="Harbor的使用"><a href="#Harbor的使用" class="headerlink" title="Harbor的使用"></a>Harbor的使用</h1><ul>
 <li>首先要明确harbor管理镜像是基于project的。</li>
+<li>先创建项目，项目名和登录的用户名一样，设置为public。</li>
+<li><p>具体的上传镜像和拉取操作官网上都有。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker默认是https安全连接，而harbor是http连接，所以需要在docker守护进程的的启动参数中添加--insecure-registry</span><br></pre></td></tr></table></figure>
+<ol>
+<li>sudo vi /usr/lib/systemd/system/docker.service</li>
+<li>在<code>ExecStart=/usr/bin/dockerd</code>后面添加<code>--insecure-registry = 172.31.6.30</code></li>
+</ol>
+</li>
 </ul>
+<p><strong> 我在使用harbor时遇到的问题 </strong></p>
+<ul>
+<li><p>当我拉取docker hub上的镜像时，总是timeout，我就设置了代理。</p>
+<ol>
+<li>mkdir -p /etc/systemd/system/docker.service.d</li>
+<li>vim /etc/systemd/system/docker.service.d/http-proxy.conf</li>
+<li>在http-proxy.conf添加如下内容<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Service]</span><br><span class="line">Environment=”HTTP_PROXY=http:// 172.31.25.54:48888”</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>设置代理docker就连接不到harbor了，可能是harbor的容器被破坏了，因为harbor的启动是基于docker和docker-compose的。</p>
+</li>
+</ul>
+<p><strong> 解决方法 </strong></p>
+<ol>
+<li>在harbor的根目录下，删除harbor所需的容器<br><code>docker-compose done -v</code></li>
+<li>重启harbor<br><code>docker-compose up -d</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以上操作，需要在harbor目录下进行，并且该目录下要有docker-compose.yam文件</span><br></pre></td></tr></table></figure>
+<p><strong> 再验证就可以连接了 </strong><br><code>docker login 172.31.6.30:80</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">其中的ip和要改成你自己的harbor所在的ip地址</span><br></pre></td></tr></table></figure></p>
 
           <br>
-<p>Joker</p>
+<p>RemoteMountain</p>
 <p><img src='/images/scribble3.png' alt='scribble'></p>
 
         </section>
