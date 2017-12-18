@@ -246,6 +246,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/18/linux学习篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Joker">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/18/linux学习篇/" itemprop="url">linux学习篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-18T20:00:51+08:00">
+                2017-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p> 因为最近的在做一个PAAS的docker容器项目，项目主要是和linux这个OS打交道，于是我恶补了一波linux的基础知识，一直听说<code>鸟叔的linux私房菜</code>讲linux非常的好，不过项目中一直没有需要用到linux的相关知识，正好通过这次机会好好研究一下这本书，跟着鸟叔学习一下linux这个顶好的OS。</p>
+<p>鸟叔讲linux。不仅仅单纯的教授linux，同时强调计算机基础知识和网络相关知识对于学习linux的重要性。</p>
+<p>我学习linux是，通过在主机上安装VirturlBox这款虚拟机来跑centos7（项目要求centos7以上的版本），通过百度和谷歌，终于是跑起来了centos（<code>很激动，毕竟第一次嘛</code>），然后开启虚拟机进入linux的界面，接着就傻眼（竟然不是默认图形化界面），但是听说学习linux就要用command line啊，于是就硬着头皮敲了一整天的命令。后来感觉不用window X是正确的（起码对于我们开发人员）。</p>
+<p>但是linux自带的命令行窗口特别的不友好，然后网上下载可以连接到linux的终端软件，因为网络问题搞了整整一天的时间才搞定（<code>不懂虚拟机的网络模式</code>）。</p>
+<p>Vbox提供四种网络模式：</p>
+<ul>
+<li><p>NAT（network address translation，网络地址转换）</p>
+</li>
+<li><p>NAT  Nerwork</p>
+</li>
+<li><p>桥接网络（bridge network）</p>
+</li>
+<li><p>仅主机（host-only）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">关于这四种模式的说明，网上很多就不重复造轮子了！</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="安装centos之前的虚拟机设置"><a href="#安装centos之前的虚拟机设置" class="headerlink" title="安装centos之前的虚拟机设置"></a>安装centos之前的虚拟机设置</h1><h2 id="网络设置"><a href="#网络设置" class="headerlink" title="网络设置"></a>网络设置</h2><p>通过Vbxo官网对于这四种网络模式说明，我选择了NAT模式，这对于我的项目开发很适合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NAT模式的虚拟机在真实的网络环境中是被架空的，要想成为服务器，就要通过端口转发。</span><br></pre></td></tr></table></figure>
+<p>其实我一开始选择的是桥接，但是选择这种模式，然后IPv4选择自动获取网关和DNS，但是主机总是不分配IP地址，只能换成static的gateway和DNS。</p>
+<p>其他方面的配置，根据自己的实际情况自行选择。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">强调以下文件系统的设置，我是跟着鸟叔走的，毕竟自己设置，对于linux的fs会有一定的熟悉嘛！</span><br></pre></td></tr></table></figure>
+<p>然后就是开始安装事先准备好的centos虚拟镜像。</p>
+<p>安装过程中，我们可以设置root用户的登录密码，然后再设置一个平时学习的时候登录的用户，设置为管理员。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一般不要用root用户玩linux，培养一下安全意识嘛！</span><br></pre></td></tr></table></figure>
+<p>安装结束后，重启一下就可以进入linux的世界了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于初次接触linux的人，可以额外安装gnome DeskTOP图形化界面，方便我们查看和学习。</span><br></pre></td></tr></table></figure>
+<p>以上就是我第一次接触linux的基本情况了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/27/harbor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -571,7 +717,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -584,7 +730,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
